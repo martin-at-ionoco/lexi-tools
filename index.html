@@ -612,66 +612,62 @@
         //     };
         // }
 
-
         function seed() {
             const showTypes = {
                 id: uid(),
                 name: 'Show Types',
                 items: [
-                    'dating show',
-                    'social experiment',
-                    'survival challenge',
-                    'competition series',
-                    'talent show',
-                    'isolation game'
+                    'dating show', 'social experiment', 'survival challenge',
+                    'competition series', 'talent show', 'isolation game'
                 ],
             };
             const settings = {
                 id: uid(),
                 name: 'Settings',
                 items: [
-                    'a deserted island',
-                    'a luxury villa',
-                    'a futuristic bunker',
-                    'an arctic base',
-                    'a haunted mansion',
-                    'a cruise ship'
+                    'a deserted island', 'a luxury villa', 'a futuristic bunker',
+                    'an arctic base', 'a haunted mansion', 'a cruise ship'
                 ],
             };
             const twists = {
                 id: uid(),
                 name: 'Twists',
                 items: [
-                    'hidden alliances',
-                    'audience votes',
-                    'secret tasks',
-                    'money temptations',
-                    'elimination battles',
-                    'unexpected guests'
+                    'hidden alliances', 'audience votes', 'secret tasks',
+                    'money temptations', 'elimination battles', 'unexpected guests'
                 ],
             };
             const prizes = {
                 id: uid(),
                 name: 'Prizes',
                 items: [
-                    '$1 million',
-                    'a luxury house',
-                    'a world tour',
-                    'a celebrity contract',
-                    'ultimate fame',
-                    'a mystery jackpot'
+                    '$1 million', 'a luxury house', 'a world tour',
+                    'a celebrity contract', 'ultimate fame', 'a mystery jackpot'
                 ],
             };
             const audience = {
                 id: uid(),
                 name: 'Audience Powers',
                 items: [
-                    'eliminate a contestant',
-                    'save their favourite player',
-                    'choose the next challenge',
-                    'swap two contestants',
-                    'introduce a new twist',
-                    'decide the weekly theme'
+                    'eliminate a contestant', 'save their favourite player',
+                    'choose the next challenge', 'swap two contestants',
+                    'introduce a new twist', 'decide the weekly theme'
+                ],
+            };
+            const shockTwists = {
+                id: uid(),
+                name: 'Shock Twists',
+                items: [
+                    'the exes move in',
+                    'the cash prize drops every day',
+                    'a secret mole controls challenges',
+                    'public votes can nullify eliminations',
+                    'new players arrive mid-finale',
+                    'no one can speak for 24 hours',
+                    'alliances must swap partners',
+                    'the winner is chosen by eliminated players',
+                    'hidden cameras in a second house',
+                    'contestants must share a single budget'
                 ],
             };
 
@@ -682,6 +678,7 @@
                     [twists.id]: twists,
                     [prizes.id]: prizes,
                     [audience.id]: audience,
+                    [shockTwists.id]: shockTwists,
                 },
                 blocks: [
                     { type: 'text', id: uid(), text: 'A ' },
@@ -692,9 +689,11 @@
                     { type: 'slot', id: uid(), listId: twists.id, value: '', locked: false },
                     { type: 'text', id: uid(), text: ', with contestants competing for ' },
                     { type: 'slot', id: uid(), listId: prizes.id, value: '', locked: false },
+                    { type: 'text', id: uid(), text: ', and the twist is ' },
+                    { type: 'slot', id: uid(), listId: shockTwists.id, value: '', locked: false },
                     { type: 'text', id: uid(), text: '. The audience has the power to ' },
                     { type: 'slot', id: uid(), listId: audience.id, value: '', locked: false },
-                    { type: 'text', id: uid(), text: '.' },
+                    { type: 'text', id: uid(), text: '!' },
                 ],
             };
         }
