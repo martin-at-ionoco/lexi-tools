@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lexi Tools</title>
+    <style>
+        :root {
+            --bg: #ffeef7;
+            /* light pink background */
+            --panel: #fffafc;
+            /* off-white panels */
+            --muted: #f8c7da;
+            /* pastel pink borders */
+            --text: #3a2d2d;
+            /* dark text */
+            --text-dim: #7a5c6b;
+            /* muted mauve text */
+            --accent: #ff6ad5;
+            /* hot pink */
+            --accent-2: #4deeea;
+            /* Miami aqua */
+            --danger: #ff2e63;
+            /* neon pink/red */
+            --warn: #ffc857;
+            /* gold/yellow */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: linear-gradient(180deg, #ffd1ec, var(--bg));
+            /* pink gradient background */
+            color: var(--text);
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 2px solid var(--muted);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
+            /* subtle pink glow */
+        }
+
+        h2,
+        h3 {
+            margin: 0 0 10px;
+            font-weight: 650;
+            letter-spacing: .2px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stack {
+            display: grid;
+            gap: 8px;
+        }
+
+        .muted {
+            color: var(--text-dim);
+        }
+
+        .btn {
+            border: 2px solid #ffc1e3;
+            /* pastel pink border */
+            background: #ffe9f5;
+            /* light pink background */
+            color: #3a2d2d;
+            /* dark text for readability */
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(255, 106, 213, 0.15);
+        }
+
+        .btn:hover {
+            background: #ffd6ed;
+            /* brighter pink hover */
+            border-color: #ff6ad5;
+            /* neon pink border */
+            box-shadow: 0 4px 10px rgba(255, 106, 213, 0.25);
+        }
+
+        /* Primary (Hot Pink) */
+        .btn.primary {
+            background: linear-gradient(180deg, #ff6ad5, #ff4bbd);
+            border-color: #ff4bbd;
+            color: #fff;
+        }
+
+        /* Secondary (Aqua/Green) */
+        .btn.green {
+            background: linear-gradient(180deg, #4deeea, #30cfcf);
+            border-color: #30cfcf;
+            color: #0b2c2c;
+        }
+
+        /* Warning (Sunny yellow) */
+        .btn.warn {
+            background: #fff8e1;
+            border-color: #ffd54f;
+            color: #7a4e00;
+        }
+
+        /* Ghost button (outline only) */
+        .btn.ghost {
+            background: transparent;
+            border: 2px dashed #ffc1e3;
+            color: #ff6ad5;
+        }
+
+
+        .btn.icon {
+            padding: 6px 8px;
+        }
+
+        .sep {
+            height: 1px;
+            background: var(--muted);
+            margin: 10px 0;
+        }
+
+        input[type="text"],
+        select,
+        textarea,
+        input[type="number"] {
+            background: #0f1426;
+            color: var(--text);
+            border: 1px solid var(--muted);
+            border-radius: 10px;
+            padding: 8px 10px;
+            outline: none;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .flex-1 {
+            flex: 1 1 auto;
+        }
+
+        /* Composer */
+        .composer {
+            padding: 10px;
+            border-radius: 10px;
+            background: #10142a;
+            border: 1px dashed #2a2f47;
+        }
+
+        .blocks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            min-height: 56px;
+        }
+
+        .block {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px 8px;
+            border-radius: 10px;
+            border: 1px solid var(--muted);
+            background: #0f1426;
+        }
+
+        /* Drag and drop */
+        .block.dragging {
+            opacity: .5;
+        }
+
+        .drop-marker {
+            width: 0;
+            height: 28px;
+            border-left: 3px solid var(--accent);
+            margin: 0 2px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .blocks.drag-mode {
+            user-select: none;
+        }
+
+
+        .block.text {
+            background: #0f1426;
+        }
+
+        .block.slot {
+            background: #131a34;
+        }
+
+        .block.locked {
+            outline: 2px solid #2e7;
+        }
+
+        .block .tools {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .mini {
+            font-size: 12px;
+            padding: 4px 6px;
+            border-radius: 8px;
+        }
+
+        .mini.red {
+            background: #2b1418;
+            color: #ff9fa6;
+            border: 1px solid #5a2630;
+        }
+
+        .mini.blue {
+            background: #13223a;
+            color: #9cc5ff;
+            border: 1px solid #29426b;
+        }
+
+        .mini.gray {
+            background: #1a1f33;
+            color: var(--text-dim);
+            border: 1px solid var(--muted);
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .output {
+            background: #fff0f6;
+            border: 2px solid #ffc1e3;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .pill {
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid var(--muted);
+            background: #191e36;
+            color: var(--text-dim);
+        }
+
+        .list-item {
+            padding: 10px;
+            border: 1px solid var(--muted);
+            border-radius: 10px;
+            background: #0f1426;
+        }
+
+        /* Miami pastel for composer area */
+        .composer {
+            padding: 12px;
+            border-radius: 14px;
+            background: #fff5fb;
+            border: 2px dashed #ffb8dc;
+            box-shadow: 0 6px 16px rgba(255, 106, 213, 0.12);
+        }
+
+        /* Blocks row spacing */
+        .blocks {
+            gap: 10px;
+        }
+
+        /* Base block styling */
+        .block {
+            border-radius: 12px;
+            border: 2px solid #ffc1e3;
+            background: #fff0f7;
+            box-shadow: 0 3px 10px rgba(255, 105, 180, 0.12);
+            user-select: none;
+        }
+
+        /* Text vs Slot blocks */
+        .block.text {
+            background: #fff7d6;
+            border-color: #ffe08a;
+        }
+
+        /* soft sunshine */
+        .block.slot {
+            background: #ebfffb;
+            border-color: #b9f6ef;
+        }
+
+        /* minty aqua */
+
+        /* Locked highlight */
+        .block.locked {
+            outline: 3px solid #4deeea;
+        }
+
+        /* Drag handle (if you added it) */
+        .handle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
+            margin-right: 8px;
+            border: 2px solid #ffc1e3;
+            border-radius: 8px;
+            background: #ffe3f3;
+            font-size: 12px;
+            cursor: grab;
+        }
+
+        /* Mini tool buttons on blocks */
+        .mini.gray {
+            background: #ffe9f5;
+            color: #7a5c6b;
+            border: 1px solid #ffc1e3;
+        }
+
+        .mini.blue {
+            background: #e9fffe;
+            color: #0b4b4b;
+            border: 1px solid #b9f6ef;
+        }
+
+        .mini.red {
+            background: #fff0f3;
+            color: #cc2a5b;
+            border: 1px solid #ffb3c9;
+        }
+
+        /* Inputs, selects, textarea inside lists and slots */
+        input[type="text"],
+        select,
+        textarea,
+        input[type="number"] {
+            background: #fffdfd;
+            color: #3a2d2d;
+            border: 2px solid #ffc1e3;
+            border-radius: 10px;
+        }
+
+        input[type="text"]::placeholder,
+        textarea::placeholder {
+            color: #b98199;
+        }
+
+        /* Focus ring */
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #4deeea;
+            box-shadow: 0 0 0 3px rgba(77, 238, 234, 0.25);
+            outline: none;
+        }
+
+        /* List editor cards */
+        .list-item {
+            padding: 12px;
+            border: 2px solid #ffc1e3;
+            border-radius: 14px;
+            background: #fff7fb;
+            box-shadow: 0 6px 16px rgba(255, 106, 213, 0.12);
+        }
+
+        /* Counter pill */
+        .pill {
+            background: #ffe9f5;
+            border: 1px solid #ffc1e3;
+            color: #7a5c6b;
+        }
+
+        /* Output matches theme */
+        .output {
+            background: #fff5fb;
+            border: 2px solid #ffc1e3;
+            border-radius: 12px;
+        }
+
+        /* Buttons keep Miami accents */
+        .btn:hover {
+            border-color: var(--accent);
+        }
+
+        .btn.primary {
+            background: linear-gradient(180deg, #ff6ad5, #ff4bbd);
+            border-color: #ff4bbd;
+            color: #fff;
+        }
+
+        .btn.green {
+            background: linear-gradient(180deg, #4deeea, #30cfcf);
+            border-color: #30cfcf;
+            color: #0b2c2c;
+        }
+
+        .btn.warn {
+            background: #fff4d1;
+            border-color: #ffde7d;
+            color: #a05d00;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="panel" id="listsPanel">
+            <h2>Word Lists</h2>
+            <div class="stack" id="lists"></div>
+            <div class="sep"></div>
+            <div class="row">
+                <button class="btn green" id="addListBtn">Add List</button>
+                <button class="btn" id="exportBtn" title="Download project JSON">Export</button>
+                <input type="file" id="importFile" accept="application/json" style="display:none" />
+                <button class="btn" id="importBtn" title="Load project JSON">Import</button>
+            </div>
+            <p class="muted" style="margin-top:8px">Lists auto save in your browser. Click a list to edit its items.
+                Words are one per line.</p>
+        </aside>
+
+        <main class="panel">
+            <div class="row" style="justify-content: space-between">
+                <h2>Composer</h2>
+                <span class="pill" id="saveStatus">Saved</span>
+            </div>
+
+            <div class="stack">
+                <div class="composer">
+                    <div class="blocks" id="blocks"></div>
+                    <div class="toolbar" style="margin-top:10px">
+                        <button class="btn primary" id="randAll">Randomise All</button>
+                        <button class="btn" id="randUnlocked">Randomise Unlocked</button>
+                        <button class="btn warn" id="clearAll">Clear Values</button>
+                        <!-- <span class="muted">Tips: double click a text block to edit. Press Tab to move between
+                            boxes.</span> -->
+                    </div>
+                    <div class="row" style="gap: 6px">
+                        <button class="btn" id="addText">+ Text</button>
+                        <button class="btn" id="addSlot">+ Textbox</button>
+
+                        <!-- New: composition-only IO -->
+                        <button class="btn" id="exportCompBtn" title="Export only the text/textbox composition">Export
+                            Composition</button>
+                        <input type="file" id="importCompFile" accept="application/json" style="display:none" />
+                        <button class="btn" id="importCompBtn" title="Import only the text/textbox composition">Import
+                            Composition</button>
+                    </div>
+                </div>
+
+                <!-- <div class="row" style="gap: 6px">
+                    <button class="btn" id="addText">+ Text</button>
+                    <button class="btn" id="addSlot">+ Textbox</button>
+                </div> -->
+
+                <div>
+                    <div class="row" style="gap: 6px; align-items:center; justify-content: space-between">
+                        <h3>Live Output</h3>
+                        <button class="btn" id="copyOut">Copy Output</button>
+                    </div>
+                    <div class="output" id="output"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <template id="listEditorTpl">
+        <div class="list-item">
+            <div class="row" style="align-items: center; gap:8px; margin-bottom:8px">
+                <input type="text" class="list-name" placeholder="List name" />
+                <span class="pill" data-count>0 words</span>
+            </div>
+            <textarea class="list-words" placeholder="One word or phrase per line"></textarea>
+            <div class="row" style="margin-top:8px">
+                <button class="btn mini gray" data-dup>Duplicate</button>
+                <button class="btn mini red" data-del>Delete</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Data model and storage
+        const LS_KEY = 'lexi-builder-v1';
+        const uid = () => Math.random().toString(36).slice(2, 9);
+
+        /** @type {{lists: Record<string,{id:string,name:string,items:string[]}>, blocks: Array<any>}} */
+        let state = seed();
+
+        // function seed() {
+        //     const hook = {
+        //         id: uid(),
+        //         name: 'Hook Words',
+        //         items: [
+        //             'Killer', 'Love', 'Battle', 'Secrets', 'Temptation',
+        //             'Survivors', 'Drama', 'Dreams', 'Revenge', 'Rivals',
+        //             'Paradise', 'Chaos', 'Obsession', 'Heartbreak'
+        //         ],
+        //     };
+        //     const prepositions = {
+        //         id: uid(),
+        //         name: 'Prepositions',
+        //         items: ['in the', 'on the', 'at the', 'inside the'],
+        //     };
+        //     const settings = {
+        //         id: uid(),
+        //         name: 'Settings',
+        //         items: [
+        //             'Villa', 'Island', 'Bunker', 'Penthouse', 'Jungle',
+        //             'Arena', 'Mansion', 'Cruise', 'House', 'Beach', 'Loft'
+        //         ],
+        //     };
+        //     const twists = {
+        //         id: uid(),
+        //         name: 'Twists',
+        //         items: [
+        //             'of Secrets', 'of Love', 'of Lies', 'of Power',
+        //             'of Paradise', 'of Fire', 'of Fame', 'of Trust'
+        //         ],
+        //     };
+        //     const formats = {
+        //         id: uid(),
+        //         name: 'Formats',
+        //         items: [
+        //             'Too Hot to Handle',
+        //             'Love or Money',
+        //             'Battle of the Exes',
+        //             'Last One Standing',
+        //             'The Real Roommates',
+        //             'Date or Ditch'
+        //         ],
+        //     };
+
+        //     // Pick one of several title block patterns
+        //     const patterns = [
+        //         // X in the Y of Z
+        //         [
+        //             { type: 'slot', id: uid(), listId: hook.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' ' },
+        //             { type: 'slot', id: uid(), listId: prepositions.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' ' },
+        //             { type: 'slot', id: uid(), listId: settings.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' ' },
+        //             { type: 'slot', id: uid(), listId: twists.id, value: '', locked: false },
+        //         ],
+        //         // Rivals in Paradise / Love in the Villa
+        //         [
+        //             { type: 'slot', id: uid(), listId: hook.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' ' },
+        //             { type: 'slot', id: uid(), listId: prepositions.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' ' },
+        //             { type: 'slot', id: uid(), listId: settings.id, value: '', locked: false },
+        //         ],
+        //         // The Real Housewives-style
+        //         [
+        //             { type: 'text', id: uid(), text: 'The Real ' },
+        //             { type: 'slot', id: uid(), listId: hook.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' of ' },
+        //             { type: 'slot', id: uid(), listId: settings.id, value: '', locked: false },
+        //         ],
+        //         // Short punchy one-word + setting
+        //         [
+        //             { type: 'slot', id: uid(), listId: hook.id, value: '', locked: false },
+        //             { type: 'text', id: uid(), text: ' ' },
+        //             { type: 'slot', id: uid(), listId: settings.id, value: '', locked: false },
+        //         ],
+        //         // Pre-made format (Too Hot to Handle etc.)
+        //         [
+        //             { type: 'slot', id: uid(), listId: formats.id, value: '', locked: false },
+        //         ]
+        //     ];
+
+        //     // Start with first pattern by default (user can re-roll)
+        //     const blocks = patterns[0];
+
+        //     return {
+        //         lists: { [hook.id]: hook, [prepositions.id]: prepositions, [settings.id]: settings, [twists.id]: twists, [formats.id]: formats },
+        //         blocks,
+        //     };
+        // }
+
+
+        function seed() {
+            const showTypes = {
+                id: uid(),
+                name: 'Show Types',
+                items: [
+                    'dating show',
+                    'social experiment',
+                    'survival challenge',
+                    'competition series',
+                    'talent show',
+                    'isolation game'
+                ],
+            };
+            const settings = {
+                id: uid(),
+                name: 'Settings',
+                items: [
+                    'a deserted island',
+                    'a luxury villa',
+                    'a futuristic bunker',
+                    'an arctic base',
+                    'a haunted mansion',
+                    'a cruise ship'
+                ],
+            };
+            const twists = {
+                id: uid(),
+                name: 'Twists',
+                items: [
+                    'hidden alliances',
+                    'audience votes',
+                    'secret tasks',
+                    'money temptations',
+                    'elimination battles',
+                    'unexpected guests'
+                ],
+            };
+            const prizes = {
+                id: uid(),
+                name: 'Prizes',
+                items: [
+                    '$1 million',
+                    'a luxury house',
+                    'a world tour',
+                    'a celebrity contract',
+                    'ultimate fame',
+                    'a mystery jackpot'
+                ],
+            };
+            const audience = {
+                id: uid(),
+                name: 'Audience Powers',
+                items: [
+                    'eliminate a contestant',
+                    'save their favourite player',
+                    'choose the next challenge',
+                    'swap two contestants',
+                    'introduce a new twist',
+                    'decide the weekly theme'
+                ],
+            };
+
+            return {
+                lists: {
+                    [showTypes.id]: showTypes,
+                    [settings.id]: settings,
+                    [twists.id]: twists,
+                    [prizes.id]: prizes,
+                    [audience.id]: audience,
+                },
+                blocks: [
+                    { type: 'text', id: uid(), text: 'A ' },
+                    { type: 'slot', id: uid(), listId: showTypes.id, value: '', locked: false },
+                    { type: 'text', id: uid(), text: ' set in ' },
+                    { type: 'slot', id: uid(), listId: settings.id, value: '', locked: false },
+                    { type: 'text', id: uid(), text: ' featuring ' },
+                    { type: 'slot', id: uid(), listId: twists.id, value: '', locked: false },
+                    { type: 'text', id: uid(), text: ', with contestants competing for ' },
+                    { type: 'slot', id: uid(), listId: prizes.id, value: '', locked: false },
+                    { type: 'text', id: uid(), text: '. The audience has the power to ' },
+                    { type: 'slot', id: uid(), listId: audience.id, value: '', locked: false },
+                    { type: 'text', id: uid(), text: '.' },
+                ],
+            };
+        }
+
+        function save() {
+            try {
+                localStorage.setItem(LS_KEY, JSON.stringify(state));
+                setSaveStatus('Saved');
+            } catch (e) {
+                console.error('Save failed', e);
+                setSaveStatus('Save error');
+            }
+        }
+
+        function load() {
+            try {
+                const raw = localStorage.getItem(LS_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch { return null; }
+        }
+
+        function setSaveStatus(text) {
+            const el = document.getElementById('saveStatus');
+            el.textContent = text;
+        }
+
+        // Rendering
+        function render() {
+            renderLists();
+            renderBlocks();
+            renderOutput();
+            save();
+        }
+
+        function renderLists() {
+            const wrap = document.getElementById('lists');
+            wrap.innerHTML = '';
+
+            const tpl = document.getElementById('listEditorTpl');
+            Object.values(state.lists).forEach(list => {
+                const node = tpl.content.cloneNode(true);
+                const root = node.querySelector('.list-item');
+                const name = node.querySelector('.list-name');
+                const ta = node.querySelector('.list-words');
+                const count = node.querySelector('[data-count]');
+
+                name.value = list.name;
+                ta.value = list.items.join('\n');
+                count.textContent = `${list.items.length} word${list.items.length !== 1 ? 's' : ''}`;
+
+                name.addEventListener('input', () => { list.name = name.value; renderBlocks(); save(); });
+                ta.addEventListener('input', () => {
+                    list.items = ta.value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+                    count.textContent = `${list.items.length} word${list.items.length !== 1 ? 's' : ''}`;
+                    save();
+                });
+
+                root.querySelector('[data-del]').addEventListener('click', () => {
+                    if (!confirm(`Delete list "${list.name}"?`)) return;
+                    // Remove references from slots that used this list
+                    state.blocks.forEach(b => { if (b.type === 'slot' && b.listId === list.id) { b.listId = null; } });
+                    delete state.lists[list.id];
+                    render();
+                });
+
+                root.querySelector('[data-dup]').addEventListener('click', () => {
+                    const id = uid();
+                    state.lists[id] = { id, name: list.name + ' copy', items: [...list.items] };
+                    renderLists();
+                });
+
+                wrap.appendChild(node);
+            });
+        }
+
+        let dragIndex = null;
+        let dropMarker = null;
+
+        function ensureDropMarker() {
+            if (!dropMarker) {
+                dropMarker = document.createElement('span');
+                dropMarker.className = 'drop-marker';
+            }
+            return dropMarker;
+        }
+        function removeDropMarker() {
+            if (dropMarker && dropMarker.parentNode) dropMarker.parentNode.removeChild(dropMarker);
+        }
+
+        function isAfterPointer(target, clientX) {
+            const r = target.getBoundingClientRect();
+            return clientX > (r.left + r.width / 2);
+        }
+
+        function isFormControl(el) {
+            const tag = el.tagName;
+            return tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || tag === 'LABEL' || tag === 'BUTTON' || tag === 'OPTION';
+        }
+
+        function attachDnd(el, index) {
+            el.setAttribute('draggable', 'true');
+            el.dataset.index = String(index);
+
+            // If you start on a control, do not drag
+            el.addEventListener('mousedown', (e) => {
+                if (isFormControl(e.target)) {
+                    el.setAttribute('draggable', 'false');
+                } else {
+                    el.setAttribute('draggable', 'true');
+                }
+            });
+
+            el.addEventListener('dragstart', (e) => {
+                // read fresh index from dataset in case of re-renders
+                dragIndex = Number(e.currentTarget.dataset.index);
+                e.dataTransfer.effectAllowed = 'move';
+                el.classList.add('dragging');
+            });
+
+            el.addEventListener('dragend', () => {
+                el.classList.remove('dragging');
+                dragIndex = null;
+                removeDropMarker();
+                // reset so future drags work even after clicking controls
+                el.setAttribute('draggable', 'true');
+            });
+
+            el.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const marker = ensureDropMarker();
+                if (isAfterPointer(el, e.clientX)) el.after(marker); else el.before(marker);
+            });
+
+            el.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const after = isAfterPointer(el, e.clientX);
+                const overIndex = Number(el.dataset.index);
+                let to = overIndex + (after ? 1 : 0);
+
+                if (dragIndex == null) return;
+
+                const [moved] = state.blocks.splice(dragIndex, 1);
+                if (to > dragIndex) to -= 1;
+                state.blocks.splice(to, 0, moved);
+
+                removeDropMarker();
+                renderBlocks();
+                renderOutput();
+                save();
+            });
+        }
+
+        function renderBlocks() {
+            const el = document.getElementById('blocks');
+            el.innerHTML = '';
+            state.blocks.forEach((b, idx) => {
+                if (b.type === 'text') el.appendChild(renderTextBlock(b, idx));
+                else el.appendChild(renderSlotBlock(b, idx));
+            });
+        }
+
+        function renderTextBlock(block, index) {
+            const wrap = document.createElement('span');
+            wrap.className = 'block text';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = block.text;
+            input.size = Math.max(1, Math.min(40, block.text.length || 1));
+            input.addEventListener('input', () => { block.text = input.value; input.size = Math.max(1, Math.min(40, input.value.length || 1)); renderOutput(); save(); });
+            input.addEventListener('dblclick', () => input.select());
+            input.draggable = false; // do not drag when editing
+
+            const tools = document.createElement('span');
+            tools.className = 'tools';
+            tools.append(
+                iconBtn('↑', 'Move left', () => moveBlock(index, -1)),
+                iconBtn('↓', 'Move right', () => moveBlock(index, +1)),
+                iconBtn('✎', 'Edit', () => { input.focus(); input.select(); }),
+                iconBtn('✖', 'Delete', () => { delBlock(index); })
+            );
+
+            wrap.append(input, tools);
+            attachDnd(wrap, index);
+            return wrap;
+        }
+
+        function renderSlotBlock(block, index) {
+            const wrap = document.createElement('span');
+            wrap.className = 'block slot' + (block.locked ? ' locked' : '');
+
+            const valueInput = document.createElement('input');
+            valueInput.type = 'text';
+            valueInput.placeholder = 'random word';
+            valueInput.value = block.value || '';
+            valueInput.size = Math.max(6, Math.min(24, (block.value || '').length || 6));
+            valueInput.addEventListener('input', () => { block.value = valueInput.value; renderOutput(); save(); });
+            valueInput.draggable = false;
+
+            const select = document.createElement('select');
+            select.append(new Option('Select list…', ''));
+            for (const list of Object.values(state.lists)) {
+                select.append(new Option(list.name, list.id));
+            }
+            select.value = block.listId || '';
+            select.addEventListener('change', () => { block.listId = select.value || null; save(); });
+            select.draggable = false;
+
+            const lock = document.createElement('input');
+            lock.type = 'checkbox';
+            lock.checked = !!block.locked;
+            lock.title = 'Lock value';
+            lock.addEventListener('change', () => { block.locked = lock.checked; renderBlocks(); save(); });
+            lock.draggable = false;
+
+            const tools = document.createElement('span');
+            tools.className = 'tools';
+            tools.append(
+                iconBtn('🎲', 'Randomise', () => randSlot(index)),
+                iconBtn('↑', 'Move left', () => moveBlock(index, -1)),
+                iconBtn('↓', 'Move right', () => moveBlock(index, +1)),
+                iconBtn('✖', 'Delete', () => delBlock(index))
+            );
+
+            const lockLbl = document.createElement('label');
+            lockLbl.style.display = 'inline-flex';
+            lockLbl.style.alignItems = 'center';
+            lockLbl.style.gap = '6px';
+            lockLbl.innerHTML = `<span class="muted">Lock</span>`;
+            lockLbl.prepend(lock);
+
+            wrap.append(select, valueInput, tools, lockLbl);
+            attachDnd(wrap, index);
+            return wrap;
+        }
+
+        function exportComposition() {
+            const data = JSON.stringify({ blocks: state.blocks }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const fname = prompt('Enter a filename for this composition:', 'lexi-composition.json') || 'lexi-composition.json';
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fname.endsWith('.json') ? fname : fname + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        /**
+         * Imports only the blocks. Lists are not modified.
+         * If an imported slot references a listId that does not exist, it will be set to null.
+         * Existing blocks are replaced by default.
+         */
+        function importComposition(file, { mode = 'replace' } = {}) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const obj = JSON.parse(reader.result);
+                    if (!obj || !Array.isArray(obj.blocks)) throw new Error('Invalid file: missing "blocks" array');
+
+                    // Sanitize incoming blocks
+                    const cleaned = obj.blocks.map(sanitizeBlock).filter(Boolean);
+                    if (!cleaned.length) throw new Error('No valid blocks found');
+
+                    if (mode === 'append') {
+                        state.blocks.push(...cleaned);
+                    } else {
+                        state.blocks = cleaned;
+                    }
+
+                    renderBlocks();
+                    renderOutput();
+                    save();
+                } catch (e) {
+                    alert('Composition import failed: ' + e.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Normalise incoming block objects
+        function sanitizeBlock(b) {
+            if (!b || (b.type !== 'text' && b.type !== 'slot')) return null;
+
+            if (b.type === 'text') {
+                return {
+                    type: 'text',
+                    id: uid(),                             // fresh id
+                    text: typeof b.text === 'string' ? b.text : ''
+                };
+            }
+
+            // slot
+            const hasList = b.listId && state.lists[b.listId];
+            return {
+                type: 'slot',
+                id: uid(),                               // fresh id
+                listId: hasList ? b.listId : null,       // drop bad refs
+                value: typeof b.value === 'string' ? b.value : '',
+                locked: !!b.locked
+            };
+        }
+
+        function renderSlotBlock(block, index) {
+            const wrap = document.createElement('span');
+            wrap.className = 'block slot' + (block.locked ? ' locked' : '');
+
+            const valueInput = document.createElement('input');
+            valueInput.type = 'text';
+            valueInput.placeholder = 'random word';
+            valueInput.value = block.value || '';
+            valueInput.size = Math.max(6, Math.min(24, (block.value || '').length || 6));
+            valueInput.addEventListener('input', () => { block.value = valueInput.value; renderOutput(); save(); });
+
+            const select = document.createElement('select');
+            select.append(new Option('Select list…', ''));
+            for (const list of Object.values(state.lists)) {
+                select.append(new Option(list.name, list.id));
+            }
+            select.value = block.listId || '';
+            select.addEventListener('change', () => { block.listId = select.value || null; save(); });
+
+            const lock = document.createElement('input');
+            lock.type = 'checkbox';
+            lock.checked = !!block.locked;
+            lock.title = 'Lock value';
+            lock.addEventListener('change', () => { block.locked = lock.checked; renderBlocks(); save(); });
+
+            const tools = document.createElement('span');
+            tools.className = 'tools';
+
+            tools.append(
+                iconBtn('🎲', 'Randomise', () => randSlot(index)),
+                iconBtn('↑', 'Move left', () => moveBlock(index, -1)),
+                iconBtn('↓', 'Move right', () => moveBlock(index, +1)),
+                iconBtn('✖', 'Delete', () => delBlock(index))
+            );
+
+            const lockLbl = document.createElement('label');
+            lockLbl.style.display = 'inline-flex';
+            lockLbl.style.alignItems = 'center';
+            lockLbl.style.gap = '6px';
+            lockLbl.innerHTML = '<span class="muted">Lock</span>';
+            lockLbl.prepend(lock);
+
+            wrap.append(select, valueInput, tools, lockLbl);
+            return wrap;
+        }
+
+        function iconBtn(txt, title, onClick) {
+            const b = document.createElement('button');
+            b.className = 'btn mini gray icon';
+            b.textContent = txt;
+            b.title = title;
+            b.addEventListener('click', onClick);
+            return b;
+        }
+
+        function renderOutput() {
+            const out = state.blocks.map(b => b.type === 'text' ? (b.text || '') : (b.value || '___')).join('');
+            document.getElementById('output').textContent = out;
+        }
+
+        // Block actions
+        function addText() {
+            state.blocks.push({ type: 'text', id: uid(), text: ' ' });
+            render();
+        }
+        function addSlot() {
+            state.blocks.push({ type: 'slot', id: uid(), listId: null, value: '', locked: false });
+            render();
+        }
+        function delBlock(index) {
+            state.blocks.splice(index, 1);
+            render();
+        }
+        function moveBlock(index, delta) {
+            const j = index + delta;
+            if (j < 0 || j >= state.blocks.length) return;
+            const [b] = state.blocks.splice(index, 1);
+            state.blocks.splice(j, 0, b);
+            renderBlocks();
+            renderOutput();
+            save();
+        }
+
+        // Randomise
+        function randFrom(listId) {
+            if (!listId) return '';
+            const list = state.lists[listId];
+            if (!list || !list.items.length) return '';
+            return list.items[Math.floor(Math.random() * list.items.length)];
+        }
+        function randSlot(index) {
+            const b = state.blocks[index];
+            if (b.type !== 'slot' || b.locked) return;
+            b.value = randFrom(b.listId);
+            renderBlocks();
+            renderOutput();
+            save();
+        }
+        function randAll(unlockedOnly = false) {
+            state.blocks.forEach(b => {
+                if (b.type === 'slot' && (!unlockedOnly || !b.locked)) {
+                    b.value = randFrom(b.listId);
+                }
+            });
+            renderBlocks();
+            renderOutput();
+            save();
+        }
+
+        function clearAllValues() {
+            state.blocks.forEach(b => { if (b.type === 'slot' && (!b.locked)) b.value = ''; });
+            renderBlocks();
+            renderOutput();
+            save();
+        }
+
+        // Export and import
+        function exportJSON() {
+            const data = JSON.stringify(state, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            // ask for filename
+            const fname = prompt('Enter a filename for your project:', 'lexi-project.json') || 'lexi-project.json';
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fname.endsWith('.json') ? fname : fname + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importJSON(file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const obj = JSON.parse(reader.result);
+                    if (!obj || !obj.lists || !obj.blocks) throw new Error('Invalid file');
+                    state = obj;
+                    render();
+                } catch (e) {
+                    alert('Import failed: ' + e.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Wire up controls
+        document.getElementById('addListBtn').addEventListener('click', () => {
+            const id = uid();
+            state.lists[id] = { id, name: 'New List', items: [] };
+            renderLists();
+            save();
+        });
+
+        document.getElementById('addText').addEventListener('click', addText);
+        document.getElementById('addSlot').addEventListener('click', addSlot);
+        document.getElementById('randAll').addEventListener('click', () => randAll(false));
+        document.getElementById('randUnlocked').addEventListener('click', () => randAll(true));
+        document.getElementById('clearAll').addEventListener('click', clearAllValues);
+        document.getElementById('exportBtn').addEventListener('click', exportJSON);
+        document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+        document.getElementById('importFile').addEventListener('change', (e) => {
+            const f = e.target.files && e.target.files[0]; if (f) importJSON(f);
+        });
+        document.getElementById('exportCompBtn').addEventListener('click', exportComposition);
+
+        document.getElementById('importCompBtn').addEventListener('click', () => {
+            document.getElementById('importCompFile').click();
+        });
+
+        document.getElementById('importCompFile').addEventListener('change', (e) => {
+            const f = e.target.files && e.target.files[0];
+            if (!f) return;
+
+            const replace = confirm('Replace current composition? Click "Cancel" to append instead.');
+            importComposition(f, { mode: replace ? 'replace' : 'append' });
+
+            e.target.value = ''; // reset so same file can be picked again
+        });
+
+        // Copy output
+        document.getElementById('copyOut').addEventListener('click', async () => {
+            const out = document.getElementById('output').textContent || '';
+            try {
+                await navigator.clipboard.writeText(out);
+                const btn = document.getElementById('copyOut');
+                const old = btn.textContent;
+                btn.textContent = 'Copied';
+                setTimeout(() => (btn.textContent = old), 900);
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = out;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch { }
+                document.body.removeChild(ta);
+            }
+        });
+
+        // First render
+        render();
+    </script>
+</body>
+
+</html>
