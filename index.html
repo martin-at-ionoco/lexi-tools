@@ -471,7 +471,7 @@
                     </div>
                     <div class="row" style="gap: 6px">
                         <button class="btn" id="addText">+ Text</button>
-                        <button class="btn" id="addSlot">+ Textbox</button>
+                        <button class="btn" id="addSlot">+ Random</button>
 
                         <!-- New: composition-only IO -->
                         <button class="btn" id="exportCompBtn" title="Export only the text/textbox composition">Export
@@ -617,57 +617,101 @@
                 id: uid(),
                 name: 'Show Types',
                 items: [
-                    'dating show', 'social experiment', 'survival challenge',
-                    'competition series', 'talent show', 'isolation game'
+                    'dating show','social experiment','survival challenge','competition series','talent show','isolation game',
+                    'hidden camera prank show','cooking showdown','extreme makeover','house swap','mystery whodunnit','fashion face-off',
+                    'weight loss journey','celebrity bootcamp','singing contest','drag competition','escape room challenge','VR survival',
+                    'apocalypse simulator','parent swap','business pitch battle','dog training contest','art challenge','treasure hunt',
+                    'street dance battle','improv comedy clash','luxury lifestyle showcase','extreme sports gauntlet','board game bonanza',
+                    'reality courtroom drama','science experiment challenge','myth-busting show','office politics game','spy infiltration test',
+                    'fitness endurance race','musical theatre contest','video game showdown','animation challenge','robot building battle',
+                    'campfire confessions','superhero academy','political satire challenge','cryptid hunting expedition','urban survival contest',
+                    'renaissance fair contest','ghost hunting competition','farm life simulation','circus skills battle','desert treasure race',
+                    'space colonisation experiment','reality soap opera parody'
                 ],
             };
             const settings = {
                 id: uid(),
                 name: 'Settings',
                 items: [
-                    'a deserted island', 'a luxury villa', 'a futuristic bunker',
-                    'an arctic base', 'a haunted mansion', 'a cruise ship'
+                    'a deserted island','a luxury villa','a futuristic bunker','an arctic base','a haunted mansion','a cruise ship',
+                    'a desert canyon','a rainforest treehouse','a space station','an abandoned theme park','a medieval castle','a high-tech lab',
+                    'a remote monastery','an underwater dome','a suburban cul-de-sac','a shopping mall after hours','a sports stadium','a massive warehouse',
+                    'a giant inflatable arena','a floating oil rig','a safari lodge','a mountain cabin','a desert pyramid','a jungle temple',
+                    'a sky-high penthouse','a secret government facility','a train crossing continents','a retro diner','a volcanic island',
+                    'a frozen tundra','a luxury spa','a military bootcamp','a sci-fi desert planet','a moon base','a Martian colony',
+                    'a Wild West town','a post-apocalyptic wasteland','a vampire castle','a steampunk city','a neon cyberpunk district',
+                    'a magical forest','a carnival circus','a futuristic megacity','a gladiator arena','a subterranean cave system','a luxury ski resort',
+                    'a giant tree city','a desert caravan camp','a deep sea research station','a desert oasis'
                 ],
             };
             const twists = {
                 id: uid(),
                 name: 'Twists',
                 items: [
-                    'hidden alliances', 'audience votes', 'secret tasks',
-                    'money temptations', 'elimination battles', 'unexpected guests'
+                    'hidden alliances','audience votes','secret tasks','money temptations','elimination battles','unexpected guests',
+                    'time travel day','identity swap','sudden double elimination','sabotage cards','fake host announcements','secret immunity idol',
+                    'blindfold rounds','forced partner swap','reverse scoring','hidden cameras revealed','random weather disasters','traitor in the group',
+                    'team shuffle every week','role reversal twist','silent round','mystery guest judge','secret twin contestant','fake eviction',
+                    'swap hosts','truth serum night','double agents','sudden rule changes','flash mob twist','overnight challenge','sleep deprivation test',
+                    'steal-a-prize card','invisible player','budget cut challenge','surprise location change','hidden treasure map','reverse elimination vote',
+                    'new contestants mid-season','secret final boss','masked player reveal','audience sabotage option','unlimited immunity tokens',
+                    'daily confession bombshells','unexpected crossover episode','compulsory costume round','freeze frame challenge','forbidden romance rule',
+                    'time limit halved','prizes swapped randomly'
                 ],
             };
             const prizes = {
                 id: uid(),
                 name: 'Prizes',
                 items: [
-                    '$1 million', 'a luxury house', 'a world tour',
-                    'a celebrity contract', 'ultimate fame', 'a mystery jackpot'
+                    '$1 million','a luxury house','a world tour','a celebrity contract','ultimate fame','a mystery jackpot',
+                    'a private island','a year of free travel','a brand-new sports car','a recording deal','an endorsement contract','a golden trophy',
+                    'a scholarship fund','lifetime groceries','a designer wardrobe','a diamond ring','a charitable donation in winner’s name','a reality show spin-off',
+                    'exclusive streaming deal','a yacht','a luxury RV','a castle stay','a theme park pass for life','a chef-cooked dinner every week',
+                    'a pet of choice','exclusive VIP club membership','a gaming rig','a new wardrobe makeover','an art collection','an electric car',
+                    'a luxury watch','a luxury vacation villa','a helicopter ride package','a sports season ticket pass','a year of spa treatments',
+                    'a luxury cruise trip','a home renovation package','an adventure gear kit','a photography studio','a film cameo role','a modelling contract',
+                    'a treasure chest of gold','a mountain retreat cabin','a space tourism ticket','a worldwide billboard campaign','a hologram trophy',
+                    'a blockchain NFT prize','exclusive concert tickets','a holographic medal','an unlimited coffee card'
                 ],
             };
             const audience = {
                 id: uid(),
                 name: 'Audience Powers',
                 items: [
-                    'eliminate a contestant', 'save their favourite player',
-                    'choose the next challenge', 'swap two contestants',
-                    'introduce a new twist', 'decide the weekly theme'
+                    'eliminate a contestant','save their favourite player','choose the next challenge','swap two contestants','introduce a new twist','decide the weekly theme',
+                    'vote for a secret advantage','bring back an eliminated player','ban a contestant from voting','unlock a hidden room','control the food supply',
+                    'assign chores','pick new teams','expose a hidden secret','decide who gets immunity','reveal private confessions','choose the prize','cancel an elimination',
+                    'make players switch partners','decide sleep arrangements','vote to skip a challenge','reward extra food','control the playlist','pick team leaders',
+                    'give one contestant a clue','choose punishments','reveal diary room secrets','send anonymous messages','grant a disguise','force a truth session',
+                    'decide bedtime','ban communication for a day','award immunity randomly','cancel a reward','force double work','reveal hidden alliances',
+                    'create fake news','choose the judge','vote to end the game early','unlock special costumes','send cryptic hints','control the lights',
+                    'reveal the host’s secrets','control the weather in-game','vote for theme week','grant bonus points','erase a contestant’s points','force karaoke night'
                 ],
             };
-            const shockTwists = {
+
+       const shockTwists = {
                 id: uid(),
                 name: 'Shock Twists',
                 items: [
-                    'the exes move in',
-                    'the cash prize drops every day',
-                    'a secret mole controls challenges',
-                    'public votes can nullify eliminations',
-                    'new players arrive mid-finale',
-                    'no one can speak for 24 hours',
-                    'alliances must swap partners',
-                    'the winner is chosen by eliminated players',
-                    'hidden cameras in a second house',
-                    'contestants must share a single budget'
+                    'the exes move in','the cash prize drops every day','a secret mole controls challenges',
+                    'public votes can nullify eliminations','new players arrive mid-finale','no one can speak for 24 hours',
+                    'alliances must swap partners','the winner is chosen by eliminated players','hidden cameras in a second house',
+                    'contestants must share a single budget','the house is split into rival factions','everybody must change rooms overnight',
+                    'secret relatives are introduced','a fake host takes over for a week','the prize money is halved after mistakes',
+                    'all challenges are reversed','one contestant is secretly immune all week','a fake elimination shocks the house',
+                    'two winners are crowned instead of one','a live audience suddenly appears','the location of the show changes overnight',
+                    'all alliances are publicly revealed','diary room confessions are played to everyone','a pet or animal enters the house',
+                    'contestants swap lives with production staff','every challenge becomes a team event','the food budget is cut to zero',
+                    'social media posts decide challenges','viewers vote someone into exile','all players must swap clothes for a week',
+                    'personal secrets are revealed by the host','contestants’ families send hidden messages','an imposter contestant is revealed mid-season',
+                    'the prize turns into a non-cash reward','the host lies about the rules','players must eliminate twice as many people',
+                    'surprise twins enter pretending to be one player','eliminated contestants form a jury','a contestant can steal another’s winnings',
+                    'all contestants must wear disguises','everyone is relocated to a different house','the game splits into two simultaneous shows',
+                    'contestants must live outdoors for a week','a fake storm destroys the set','a robot takes over as host',
+                    'players must work for their daily food','one player becomes the dictator of the house','a fake news broadcast changes the rules',
+                    'all players are handcuffed into pairs','secret missions determine who stays','a blackout forces survival mode',
+                    'the show turns into a musical episode','a contestant is secretly working for the producers',
+                    'the finale is decided by random draw','a treasure chest of advantages is buried on set'
                 ],
             };
 
@@ -742,12 +786,12 @@
 
                 name.value = list.name;
                 ta.value = list.items.join('\n');
-                count.textContent = `${list.items.length} word${list.items.length !== 1 ? 's' : ''}`;
+                count.textContent = `${list.items.length} item${list.items.length !== 1 ? 's' : ''}`;
 
                 name.addEventListener('input', () => { list.name = name.value; renderBlocks(); save(); });
                 ta.addEventListener('input', () => {
                     list.items = ta.value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-                    count.textContent = `${list.items.length} word${list.items.length !== 1 ? 's' : ''}`;
+                    count.textContent = `${list.items.length} item${list.items.length !== 1 ? 's' : ''}`;
                     save();
                 });
 
